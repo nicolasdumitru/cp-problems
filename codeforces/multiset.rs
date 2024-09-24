@@ -1,3 +1,7 @@
+// Problem: https://codeforces.com/contest/1354/problem/D
+// Submission: https://codeforces.com/contest/1354/submission/282803376
+// Status: Accepted
+
 use core::panic;
 use std::{
     io::{self, Read},
