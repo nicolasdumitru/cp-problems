@@ -1,6 +1,6 @@
 // Problem: https://codeforces.com/contest/1354/problem/D
 // Submission: https://codeforces.com/contest/1354/submission/282195462
-// Status: Accepted
+// Verdict: Accepted
 
 #include <cstddef>
 #include <cstdint>

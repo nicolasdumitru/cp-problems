@@ -1,12 +1,8 @@
 // Problem: https://codeforces.com/contest/1354/problem/D
-// Submission: https://codeforces.com/contest/1354/submission/282803376
-// Status: Accepted
+// Submission: https://codeforces.com/contest/1354/submission/283077004
+// Verdict: Accepted
 
-use core::panic;
-use std::{
-    io::{self, Read},
-    usize,
-};
+use std::io::{self, Read};
 
 // Experimental prototype (WIP).
 fn read_i32() -> io::Result<i32> {
@@ -65,7 +61,7 @@ impl FenwickTree {
         let mut fen = FenwickTree {
             bit: v,
             n,
-            max_p2: 1 << (std::mem::size_of::<usize>() * 8 - n.leading_zeros() as usize),
+            max_p2: 1 << ((std::mem::size_of::<usize>() * 8 - 1) - n.leading_zeros() as usize),
         };
 
         let bit = &mut fen.bit;
@@ -91,7 +87,7 @@ impl FenwickTree {
         } else {
             self.update(
                 // remove k'th order statistic
-                match self.find_statistic(-k as u32) {
+                match self.select(-k as u32) {
                     Some(k) => k as usize,
                     None => panic!("empty"),
                 },
@@ -108,8 +104,8 @@ impl FenwickTree {
         }
     }
 
-    // The k'th order statistic.
-    fn find_statistic(&self, mut k: u32) -> Option<usize> {
+    // Find the k'th order statistic.
+    fn select(&self, mut k: u32) -> Option<usize> {
         let bit = &self.bit;
         let mut pos: usize = 0;
         let mut interval = self.max_p2;
@@ -128,7 +124,7 @@ impl FenwickTree {
     }
 
     fn get_first(&self) -> Option<usize> {
-        let pos = self.find_statistic(1)?;
+        let pos = self.select(1)?;
         Some(pos)
     }
 }
@@ -136,26 +132,19 @@ impl FenwickTree {
 fn read_frequency_vector(v: &mut Vec<u32>) {
     let n = v.len() - 1;
     for _ in 0..n {
-        let elem = match read_i32() {
-            Ok(e) => e,
-            Err(_) => panic!("IO error"),
-        };
+        let elem = read_i32().expect("IO error");
         v[elem as usize] += 1;
     }
 }
 
 fn main() {
-    let (n, q) = match (read_i32(), read_i32()) {
-        (Ok(x), Ok(y)) => (x as usize, y as u32),
-        (_, _) => panic!("IO error"),
-    };
+    let n = read_i32().expect("IO error") as usize;
+    let q = read_i32().expect("IO error") as u32;
     let mut v: Vec<u32> = vec![0; n + 1];
     read_frequency_vector(&mut v);
     let mut bit = FenwickTree::from(v);
 
-    if let Err(_) = bit.process_queries(q) {
-        panic!("IO error");
-    }
+    bit.process_queries(q).expect("IO error");
     println!(
         "{}",
         match bit.get_first() {
