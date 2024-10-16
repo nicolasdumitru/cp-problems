@@ -1,5 +1,5 @@
 // Problem: https://www.spoj.com/problems/FREQ2/
-// Submission: https://www.spoj.com/status/ns=33631898#
+// Submission: https://www.spoj.com/status/ns=33636774
 // Verdict: accepted
 
 #include <algorithm>
@@ -48,58 +48,48 @@ void read_queries(std::vector<Query> &v, usize block_size) {
     }
 }
 
-bool compare_queries(const Query &a, const Query &b) {
-    if (a.begin_block != b.begin_block) {
-        return a.begin_block < b.begin_block;
-    } else {
-        return a.range.end < b.range.end;
-    }
-}
-
-struct Sequence {
+class Sequence {
+private:
     const std::vector<u32> seq;
     std::vector<usize> freq;
     std::vector<usize> freq_freq;
     usize max_freq;
     Range range;
 
-    Sequence(const std::vector<u32> &v, Range r)
-        : seq(v), freq(MAXN + 1, 0), freq_freq(MAXN + 1, 0), max_freq(0),
-          range(r) {
-
-        for (usize i = range.begin; i <= range.end; i += 1) {
-            update(i, Add);
-            max_freq = std::max(freq[seq[i]], max_freq);
-        }
-    }
-
-    enum Increment { Add = (isize)1, Remove = (isize)-1 };
-    void update(usize pos, Increment inc) {
+    enum Increment { Add = 1, Remove = -1 };
+    void freq_update(usize pos, Increment inc) {
         usize &f = freq[seq[pos]];
         freq_freq[f] -= freq_freq[f] > 0 ? 1 : 0;
-        f += inc;
+        f += static_cast<isize>(inc);
         freq_freq[f] += 1;
     }
 
+public:
+    Sequence(const std::vector<u32> &v)
+        : seq(v), freq(MAXN + 1, 0), freq_freq(MAXN + 1, 0), max_freq(0) {
+        range.begin = range.end = 0;
+        freq_update(range.begin, Add);
+        max_freq = freq[seq[range.begin]];
+    }
+
     usize query(Query q) {
-        for (usize b = range.begin; q.range.begin < b;
-             b -= 1) {
-            update(b - 1, Add);
+        for (usize b = range.begin; q.range.begin < b; b -= 1) {
+            freq_update(b - 1, Add);
             max_freq = std::max(freq[seq[b - 1]], max_freq);
         }
 
         for (usize e = range.end + 1; e <= q.range.end; e += 1) {
-            update(e, Add);
+            freq_update(e, Add);
             max_freq = std::max(freq[seq[e]], max_freq);
         }
 
         for (usize b = range.begin; b < q.range.begin; b += 1) {
-            update(b, Remove);
+            freq_update(b, Remove);
             max_freq = freq_freq[max_freq] > 0 ? max_freq : max_freq - 1;
         }
 
         for (usize e = range.end; q.range.end < e; e -= 1) {
-            update(e, Remove);
+            freq_update(e, Remove);
             max_freq = freq_freq[max_freq] > 0 ? max_freq : max_freq - 1;
         }
 
@@ -122,9 +112,16 @@ int main() {
 
     std::vector<Query> queries(q);
     read_queries(queries, block_size);
-    std::sort(queries.begin(), queries.end(), compare_queries);
+    std::sort(queries.begin(), queries.end(),
+              [](const Query &a, const Query &b) -> bool {
+                  if (a.begin_block != b.begin_block) {
+                      return a.begin_block < b.begin_block;
+                  } else {
+                      return a.range.end < b.range.end;
+                  }
+              });
 
-    Sequence s(v, queries[0].range);
+    Sequence s(v);
     std::vector<usize> ans(q);
     for (auto i : queries) {
         ans[i.id] = s.query(i);
