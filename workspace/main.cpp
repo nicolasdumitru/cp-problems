@@ -29,10 +29,12 @@ inline auto read() -> T {
 }
 
 template <typename T>
-inline auto read_vector(std::vector<T> &v) -> void {
+inline auto read_vector(usize n) -> std::vector<T> {
+    std::vector<T> v(n);
     for (auto &&x : v) {
         x = read<T>();
     }
+    return v;
 }
 
 auto main() -> int {
