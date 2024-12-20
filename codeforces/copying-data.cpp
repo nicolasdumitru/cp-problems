@@ -1,3 +1,4 @@
+// Name: 292E Copying Data
 // Problem: https://codeforces.com/contest/292/problem/E
 // Submission: https://codeforces.com/contest/292/submission/297446356
 // Verdict: Accepted

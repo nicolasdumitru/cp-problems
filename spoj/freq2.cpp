@@ -1,3 +1,4 @@
+// Name: FREQ2
 // Problem: https://www.spoj.com/problems/FREQ2/
 // Submission: https://www.spoj.com/status/ns=33636774
 // Verdict: accepted

@@ -1,3 +1,4 @@
+// Name: 1095 Exponentiation
 // Problem: https://cses.fi/problemset/task/1095/
 // Submission: https://cses.fi/problemset/result/10954269/
 // Verdict: ACCEPTED
