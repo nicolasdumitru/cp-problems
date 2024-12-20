@@ -1,5 +1,6 @@
 CXX=clang++
 
+.PHONY: all
 all: build
 
 main: main.cpp
@@ -10,17 +11,18 @@ main: main.cpp
 		-Wpedantic \
 		-pedantic \
 		-O2 \
-		#-fsanitize=address \
-		#-fsanitize=undefined \
 		$^
 
+.PHONY: build
 build: main
 
+.PHONY: run
 run: main
 	./$^
 
 debug: main.cpp
 	g++ -o main -Wall -Wpedantic -ggdb2 $^
 
+.PHONY: clean
 clean:
 	rm main
