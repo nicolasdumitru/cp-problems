@@ -1,6 +1,11 @@
+// === Problem Information ===
 // Name: 1095 Exponentiation
-// Problem: https://cses.fi/problemset/task/1095/
-// Submission: https://cses.fi/problemset/result/10954269/
+// Statement URL: https://cses.fi/problemset/task/1095/
+
+// === Solution Information ===
+// Copyright (C) 2024 Nicolas Dumitru
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Submission URL: https://cses.fi/problemset/result/10954269/
 // Verdict: ACCEPTED
 
 #include <cstdint>

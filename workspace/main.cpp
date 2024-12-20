@@ -1,6 +1,11 @@
+// === Problem Information ===
 // Name:
-// Problem:
-// Submission:
+// Statement URL:
+
+// === Solution Information ===
+// Copyright (C) 2024 Nicolas Dumitru
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Submission URL:
 // Verdict:
 
 #include <cstddef>

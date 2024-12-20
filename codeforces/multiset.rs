@@ -1,6 +1,11 @@
+// === Problem Information ===
 // Name: 1354D Multiset
-// Problem: https://codeforces.com/contest/1354/problem/D
-// Submission: https://codeforces.com/contest/1354/submission/283077004
+// Statement URL: https://codeforces.com/contest/1354/problem/D
+
+// === Solution Information ===
+// Copyright (C) 2024 Nicolas Dumitru
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Submission URL: https://codeforces.com/contest/1354/submission/283077004
 // Verdict: Accepted
 
 use std::io::{self, Read};

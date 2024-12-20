@@ -1,6 +1,11 @@
+// === Problem Information ===
 // Name: 292E Copying Data
-// Problem: https://codeforces.com/contest/292/problem/E
-// Submission: https://codeforces.com/contest/292/submission/297551255
+// Statement URL: https://codeforces.com/contest/292/problem/E
+
+// === Solution Information ===
+// Copyright (C) 2024 Nicolas Dumitru
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Submission URL: https://codeforces.com/contest/292/submission/297551255
 // Verdict: Accepted
 
 #include <cstddef>

@@ -1,6 +1,11 @@
+// === Problem Information ===
 // Name: FREQ2
-// Problem: https://www.spoj.com/problems/FREQ2/
-// Submission: https://www.spoj.com/status/ns=33636774
+// Statement URL: https://www.spoj.com/problems/FREQ2/
+
+// === Solution Information ===
+// Copyright (C) 2024 Nicolas Dumitru
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Submission URL: https://www.spoj.com/status/ns=33636774
 // Verdict: accepted
 
 #include <algorithm>
