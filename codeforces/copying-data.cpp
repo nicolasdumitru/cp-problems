@@ -1,6 +1,6 @@
 // Name: 292E Copying Data
 // Problem: https://codeforces.com/contest/292/problem/E
-// Submission: https://codeforces.com/contest/292/submission/297446356
+// Submission: https://codeforces.com/contest/292/submission/297551255
 // Verdict: Accepted
 
 #include <cstddef>
@@ -28,10 +28,12 @@ inline auto read() -> T {
 }
 
 template <typename T>
-inline auto read_vector(std::vector<T> &v) -> void {
+inline auto read_vector(usize n) -> std::vector<T> {
+    std::vector<T> v(n);
     for (auto &&x : v) {
         x = read<T>();
     }
+    return v;
 }
 
 // Unset the least significant set bit
@@ -107,6 +109,7 @@ public:
             }
         }
     }
+
     auto query(const usize x) -> T {
         // The parameters follow the problem statement's naming convention
         usize i = origin + x;
@@ -117,6 +120,7 @@ public:
             }
             i = parent(i);
         }
+
         return result.uid > 0 ? source[x + result.offset] : dest[x];
     }
 };
@@ -144,9 +148,8 @@ auto main() -> int {
 
     const auto n = read<usize>();
     const auto m = read<u32>();
-    std::vector<i32> a(n), b(n);
-    read_vector(a);
-    read_vector(b);
+    const auto a = read_vector<i32>(n);
+    const auto b = read_vector<i32>(n);
     process_queries(m, a, b);
 
     return 0;
