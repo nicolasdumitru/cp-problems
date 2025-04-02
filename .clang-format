@@ -16,7 +16,8 @@ IndentCaseLabels: false
 BreakBeforeBraces: Attach
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Empty
-AllowShortIfStatementsOnASingleLine: Never
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+
 AllowShortLoopsOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: true
 AlwaysBreakTemplateDeclarations: Yes
