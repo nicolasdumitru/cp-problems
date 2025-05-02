@@ -31,8 +31,8 @@ inline auto is_odd(const T n) -> bool {
 
 const u32 MOD = 1'000'000'000 + 7;
 
-auto fast_exp_mod(const u32 base, const u32 exponent,
-                  const u32 mod = MOD) -> u32 {
+auto fast_exp_mod(const u32 base, const u32 exponent, const u32 mod = MOD)
+    -> u32 {
     u64 res = 1, b = base, e = exponent;
     const u64 m = mod;
     while (e > 0) {
