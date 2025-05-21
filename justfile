@@ -14,18 +14,22 @@ alias dev := develop
 
 build_dir := 'target'
 
-setup build_type='release':
-    meson setup {{build_dir}} --reconfigure  --backend=ninja --buildtype={{build_type}}
+setup build_type=default_build_type setup_type=default_setup_type:
+    meson setup {{build_dir}} --{{setup_type}} --backend=ninja --buildtype={{build_type}}
     ln -sf {{build_dir}}/compile_commands.json compile_commands.json
+default_build_type := 'release'
+default_setup_type := 'reconfigure'
+
+wipe build_type=default_build_type: (setup build_type '--wipe')
 
 build:
     meson compile -C {{build_dir}}
 
-run: build
-    ./{{build_dir}}/main
+run args='': build
+    ./{{build_dir}}/main {{args}}
 
 clean:
-    ninja -C {{build_dir}} clean
+    meson compile -C {{build_dir}} --clean
 
 distclean:
     rm -rf {{build_dir}}
@@ -37,6 +41,6 @@ update:
 
 # Format all files
 format:
-    clang-format -i $(fd '\.cpp' --full-path "$(git rev-parse --show-toplevel)")
-    nixfmt $(fd '\.nix' --full-path "$(git rev-parse --show-toplevel)")
+    clang-format -i $(fd '\.cpp$' --full-path "$(git rev-parse --show-toplevel)")
+    nixfmt $(fd '\.nix$' --full-path "$(git rev-parse --show-toplevel)")
 alias fmt := format

@@ -3,7 +3,6 @@ project('CP-Problems', 'cpp',
     'cpp_std=c++20',
     'warning_level=3',
     'cpp_args=-Wpedantic -pedantic',
-    'buildtype=release'
   ]
 )
 
