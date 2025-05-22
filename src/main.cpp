@@ -28,16 +28,18 @@ using std::cerr;
 using std::cout;
 
 template <typename T>
-inline auto read() -> T {
-    T value = (std::cin >> value, value);
+inline auto read(std::istream &input = std::cin) -> T {
+    T value;
+    input >> value;
     return value;
 }
 
 template <typename T>
-inline auto read_vector(usize n) -> std::vector<T> {
+inline auto read_vector(usize n, std::istream &input = std::cin)
+    -> std::vector<T> {
     std::vector<T> v(n);
     for (auto &&x : v) {
-        x = read<T>();
+        x = read<T>(input);
     }
     return v;
 }
