@@ -5,7 +5,7 @@
 // === Solution Information ===
 // Copyright (C) 2025 Nicolas Dumitru
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Submission URL: https://www.infoarena.ro/job_detail/3297264
+// Submission URL: https://www.infoarena.ro/job_detail/3298076
 // Verdict: Evaluare completa: 100 puncte
 
 #include <algorithm>
@@ -46,13 +46,13 @@ struct Item {
 
     friend std::istream &operator>>(std::istream &input, Item &item) {
         input >> item.weight >> item.value;
+
         return input;
     }
 };
 
 auto knapsack(std::vector<Item> &items, usize max_weight) -> u32 {
-    std::vector<std::vector<u32>> val(2,
-                                        std::vector<u32>(max_weight + 1, 0));
+    std::vector<std::vector<u32>> val(2, std::vector<u32>(max_weight + 1, 0));
     usize prev = 1;
     usize curr = 0;
 
@@ -60,11 +60,9 @@ auto knapsack(std::vector<Item> &items, usize max_weight) -> u32 {
         const auto w = items[i].weight;
         const auto v = items[i].value;
         for (usize cw = 0; cw <= max_weight; cw += 1) {
-            if (w <= cw) {
-                val[curr][cw] = std::max(val[prev][cw], val[prev][cw - w] + v);
-            } else {
-                val[curr][cw] = val[prev][cw];
-            }
+            val[curr][cw] = w <= cw
+                                ? std::max(val[prev][cw], val[prev][cw - w] + v)
+                                : val[prev][cw];
         }
     }
 
