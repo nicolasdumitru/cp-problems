@@ -46,11 +46,23 @@ struct Item {
 
     friend std::istream &operator>>(std::istream &input, Item &item) {
         input >> item.weight >> item.value;
-
         return input;
     }
 };
 
+// Solves the 0-1 knapsack problem using dynamic programming with space
+// optimization. Recurrence relation: Let val[i][w] = maximum value achievable
+// using items 0..i-1 with weight limit w Base case: val[0][w] = 0 for all w (no
+// items = no value) Recurrence: val[i][w] = max(
+//     val[i-1][w],                    // don't take item i-1
+//     val[i-1][w-weight[i-1]] + value[i-1]  // take item i-1 (if it fits)
+// )
+// Space optimization:
+// Standard DP would use O(n*W) space. However, since val[i][w] only depends on
+// val[i-1][*], we only need to store two rows at a time. We use a 2×W array
+// and alternate between rows using 'prev' and 'curr' indexes.
+// Time complexity: O(n*W) where n = number of items, W = knapsack capacity
+// Space complexity: O(W) instead of O(n*W)
 auto knapsack(std::vector<Item> &items, usize max_weight) -> u32 {
     std::vector<std::vector<u32>> val(2, std::vector<u32>(max_weight + 1, 0));
     usize prev = 1;
@@ -65,7 +77,6 @@ auto knapsack(std::vector<Item> &items, usize max_weight) -> u32 {
                                 : val[prev][cw];
         }
     }
-
     return val[prev][max_weight];
 }
 
@@ -81,6 +92,5 @@ auto main() -> int {
 
     std::ofstream knapsack_out("rucsac.out");
     knapsack_out << knapsack(items, w) << std::endl;
-
     return 0;
 }
