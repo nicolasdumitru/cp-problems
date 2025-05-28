@@ -21,7 +21,6 @@ template <typename T>
 inline auto read(std::istream &input = std::cin) -> T {
     T value;
     input >> value;
-
     return value;
 }
 
@@ -32,18 +31,21 @@ inline auto read_vector(usize n, std::istream &input = std::cin)
     for (auto &&x : v) {
         x = read<T>(input);
     }
-
     return v;
 }
 
+// 0-indexed Fenwick tree
 class FenwickTree {
     std::vector<i64> bit;
 
-    inline auto g(const usize i) -> usize {
+    // Returns the index where node i's range begins. Every node i stores the
+    // result of the query operation on the range [node_begin(i), i].
+    inline auto range_begin(const usize i) -> usize {
         return i & (i + 1);
     }
 
-    inline auto h(const usize i) -> usize {
+    // Returns the index of node i's parent node.
+    inline auto parent(const usize i) -> usize {
         return i | (i + 1);
     }
 
@@ -51,25 +53,24 @@ public:
     FenwickTree(const std::vector<i64> &v) : bit(v.size(), 0) {
         for (usize i = 0; i < bit.size(); i += 1) {
             bit[i] += v[i];
-            if (h(i) < v.size()) {
-                bit[h(i)] += bit[i];
+            if (parent(i) < v.size()) {
+                bit[parent(i)] += bit[i];
             }
         }
     }
 
     auto update(const usize pos, i64 delta) -> void {
-        for (auto i = pos; i < bit.size(); i = h(i)) {
+        for (auto i = pos; i < bit.size(); i = parent(i)) {
             bit[i] += delta;
         }
     }
 
     auto query(const usize pos) -> i64 {
         i64 sum = 0;
-        for (auto i = pos + 1; i > 0; i = g(i)) {
+        for (auto i = pos + 1; i > 0; i = range_begin(i)) {
             i -= 1;
             sum += bit[i];
         }
-
         return sum;
     }
 
