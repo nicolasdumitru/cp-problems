@@ -20,7 +20,7 @@ setup build_type=default_build_type setup_type=default_setup_type:
 default_build_type := 'release'
 default_setup_type := 'reconfigure'
 
-wipe build_type=default_build_type: (setup build_type '--wipe')
+wipe build_type=default_build_type: (setup build_type 'wipe')
 
 build:
     meson compile -C {{build_dir}}
