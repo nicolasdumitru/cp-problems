@@ -5,7 +5,7 @@
 // === Solution Information ===
 // Copyright (C) 2025 Nicolas Dumitru
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Submission URL: https://codeforces.com/contest/620/submission/325066438
+// Submission URL: https://codeforces.com/contest/620/submission/325688140
 // Verdict: Accepted
 
 // Note: In this implementation, we distinguish between vertices and nodes by
@@ -105,7 +105,7 @@ public:
         : root(1), leaf_segments(masks.size()),
           max_leaf_segments(1 << std::bit_width(leaf_segments - 1)),
           aux_segments(max_leaf_segments),
-          tree(aux_segments + max_leaf_segments), lazy(tree.size()) {
+          tree(aux_segments + max_leaf_segments, 0), lazy(tree.size()) {
         for (const usize i : std::views::iota(usize{0}, leaf_segments)) {
             tree[aux_segments + i] = masks[i];
         }
