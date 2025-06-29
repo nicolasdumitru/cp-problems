@@ -42,7 +42,10 @@ inline auto read_vector(usize n, std::istream &input = std::cin)
 }
 
 auto main() -> int {
-    // std::ios::sync_with_stdio(false);
+    std::ios::sync_with_stdio(false); // Disable synchronization between C++ and
+                                      // C I/O for faster input/output
+    // std::cin.tie(nullptr); // Untie cin from cout to prevent automatic
+    //                        // flushing of cout before each cin
 
     return 0;
 }
