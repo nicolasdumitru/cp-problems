@@ -4,16 +4,12 @@ from collections import defaultdict
 from datetime import datetime
 import argparse
 
+
 def list_solved_problems_by_month(year):
     # Get commits in chronological order
-    cmd = [
-        'git', 'log',
-        '--reverse',
-        '--pretty=format:%ad|%s',
-        '--date=short'
-    ]
+    cmd = ["git", "log", "--reverse", "--pretty=format:%ad|%s", "--date=short"]
     result = subprocess.run(cmd, capture_output=True, text=True)
-    lines = result.stdout.strip().split('\n')
+    lines = result.stdout.strip().split("\n")
 
     pattern = re.compile(r'^(\d{4}-\d{2}-\d{2})\|([\w-]+): Solve "(.+)"$')
 
@@ -49,14 +45,17 @@ def list_solved_problems_by_month(year):
 
     return problems_by_month
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="List solved problems by month from Git commits.")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="List solved problems by month from Git commits."
+    )
     parser.add_argument(
-        'year',
-        nargs='?',
+        "year",
+        nargs="?",
         default=datetime.now().year,
         type=int,
-        help='Year to analyze (default: current year)'
+        help="Year to analyze (default: current year)",
     )
     args = parser.parse_args()
     list_solved_problems_by_month(args.year)
