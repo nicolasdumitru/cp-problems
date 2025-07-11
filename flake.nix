@@ -21,8 +21,16 @@
           clang-tools
           meson
           ninja
+
+          (python3.withPackages (
+            ps: with ps; [
+              python-lsp-server
+            ]
+          ))
+          pyright
+          black
+
           just
-          fd
         ];
       };
     };
