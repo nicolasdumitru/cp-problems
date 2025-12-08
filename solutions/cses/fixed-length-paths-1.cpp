@@ -5,7 +5,7 @@
 // === Solution Information ===
 // Copyright (C) 2025 Nicolas Dumitru
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Submission URL: https://cses.fi/problemset/result/15519688/
+// Submission URL: https://cses.fi/problemset/result/15531250/
 // Verdict: ACCEPTED
 
 #include <algorithm>
@@ -14,7 +14,6 @@
 #include <deque>
 #include <iostream>
 #include <istream>
-#include <ranges>
 #include <utility>
 #include <vector>
 
@@ -28,8 +27,7 @@ inline auto read(std::istream &input = std::cin) -> T {
 }
 
 template <typename T>
-inline auto read_vector(usize n, std::istream &input = std::cin)
-    -> std::vector<T> {
+inline auto read_vector(usize n, std::istream &input = std::cin) -> std::vector<T> {
     std::vector<T> v(n);
     for (auto &&x : v) {
         x = read<T>(input);
@@ -71,34 +69,39 @@ public:
 
 private:
     auto dfs(usize v, usize p = NIL) -> std::deque<usize> {
-        std::deque<usize> deque;
+        std::deque<usize> result;
         for (auto u : adj[v]) {
             if (u == p) {
                 continue;
             }
-            auto du = dfs(u, v);
-            if (du.size() > deque.size()) {
-                std::swap(deque, du);
-            }
-            auto indexes = std::ranges::views::iota(usize{0}, du.size());
-            for (const usize i : indexes) {
-                const auto j = k - i - 2;
-                if (j < std::min(deque.size(), k)) {
-                    count += du[i] * deque[j];
-                }
-            }
-            // Update the depth deque here, after counting the paths with LCA v.
-            // This ensures that no paths are counted twice.
-            for (const usize i : indexes) {
-                deque[i] += du[i];
-            }
+            auto child_result = dfs(u, v);
+            count += merge_small_to_large(result, child_result);
         }
-        deque.push_front(1); // The current vertex is the only vertex with depth 0.
-        if (deque.size() > k) {
-            count += deque[k];
-            deque.pop_back();
+        result.push_front(1); // The current vertex is the only vertex with depth 0.
+        if (result.size() > k) {
+            count += result[k];
+            result.pop_back();
         }
-        return deque;
+        return result;
+    }
+
+    auto merge_small_to_large(std::deque<usize> &large, std::deque<usize> &small) const -> usize {
+        usize merge_count = 0;
+        if (small.size() > large.size()) {
+            std::swap(large, small);
+        }
+        auto range_begin = k - 1 > large.size() ? k - 1 - large.size() : 0;
+        auto range_end = std::min(small.size(), k - 1);
+        for (usize i = range_begin; i < range_end; i += 1) {
+            const auto j = k - i - 2;
+            merge_count += small[i] * large[j];
+        }
+        // Update the depth large here, after counting the paths with LCA v.
+        // This ensures that no paths are counted twice.
+        for (usize i = 0; i < small.size(); i += 1) {
+            large[i] += small[i];
+        }
+        return merge_count;
     }
 
     auto add_edge(Edge e) -> void {
