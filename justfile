@@ -14,10 +14,11 @@ alias dev := develop
 
 build_dir := 'target'
 
+# Use with default setup type to setup projects for the first time
 setup build_type=default_build_type setup_type=default_setup_type:
     meson setup {{build_dir}} --{{setup_type}} --backend=ninja --buildtype={{build_type}}
     ln -sf {{build_dir}}/compile_commands.json compile_commands.json
-default_build_type := 'release'
+default_build_type := 'debug'
 default_setup_type := 'reconfigure'
 
 wipe build_type=default_build_type: (setup build_type 'wipe')
