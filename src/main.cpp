@@ -32,8 +32,7 @@ inline auto read(std::istream &input = std::cin) -> T {
 }
 
 template <typename T>
-inline auto read_vector(usize n, std::istream &input = std::cin)
-    -> std::vector<T> {
+inline auto read_vector(usize n, std::istream &input = std::cin) -> std::vector<T> {
     std::vector<T> v(n);
     for (auto &&x : v) {
         x = read<T>(input);
@@ -42,10 +41,11 @@ inline auto read_vector(usize n, std::istream &input = std::cin)
 }
 
 auto main() -> int {
-    std::ios::sync_with_stdio(false); // Disable synchronization between C++ and
-                                      // C I/O for faster input/output
-    // std::cin.tie(nullptr); // Untie cin from cout to prevent automatic
-    //                        // flushing of cout before each cin
+    // Fast I/O
+    // Disable synchronization between C++ and C I/O for faster input/output
+    std::ios::sync_with_stdio(false);
+    // Untie cin from cout to prevent automatic flushing of cout before each cin
+    std::cin.tie(nullptr);
 
     return 0;
 }
