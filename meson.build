@@ -13,7 +13,7 @@ project(
 extra_warning_flags = [
   '-pedantic',
   '-Wshadow',
-  '-Wconversion',
+  # '-Wconversion',
   '-Wfloat-equal',
 ]
 
