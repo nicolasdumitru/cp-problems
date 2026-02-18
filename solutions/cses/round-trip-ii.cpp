@@ -5,36 +5,24 @@
 // === Solution Information ===
 // Copyright (C) 2025 Nicolas Dumitru
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Submission URL: https://cses.fi/problemset/result/16299080/
+// Submission URL: https://cses.fi/problemset/result/16303093/
 // Verdict: ACCEPTED
 
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
 #include <istream>
-#include <utility>
+#include <iterator>
 #include <vector>
 
 using i32 = std::int32_t;
 using i64 = std::int64_t;
-
-// using u32 = std::uint32_t;
-// using u64 = std::uint64_t;
 
 template <typename T>
 inline auto read(std::istream &input = std::cin) -> T {
     T value;
     input >> value;
     return value;
-}
-
-template <typename T>
-inline auto read_vector(i64 n, std::istream &input = std::cin) -> std::vector<T> {
-    std::vector<T> v(n);
-    for (auto &&x : v) {
-        x = read<T>(input);
-    }
-    return v;
 }
 
 template <typename T>
@@ -56,38 +44,44 @@ auto read_directed_graph(const i64 num_vertices, const i64 num_edges) -> AdjList
  * Returns a non-empty vector of vertices if a cycle exists; otherwise, returns an empty vector.
  */
 auto find_cycle(const AdjLists<i64> &adj) -> std::vector<i64> {
-    const auto num_vertices = static_cast<i64>(adj.size() - 1); // 1-indexed vertices
-    auto visited = std::vector<bool>(adj.size(), false);
-    auto visiting = std::vector<bool>(adj.size(), false);
-    auto num_unvisited_vertices = num_vertices;
+    enum class VertexState { Unvisited, Visiting, Visited };
+    using enum VertexState;
+
+    auto vertex_states = std::vector<VertexState>(adj.size(), Unvisited);
     auto cycle = std::vector<i64>();
 
     const auto dfs = [&](auto &&self, i64 u) -> void {
-        visited[u] = true;
-        visiting[u] = true;
-        num_unvisited_vertices -= 1;
+        vertex_states[u] = Visiting;
         for (const auto v : adj[u]) {
-            if (visiting[v] && v != u) { // self-loops don't as "round trips"
-                cycle.push_back(v);
-                break;
-            }
-            if (visited[v]) {
+            // Skip vertices based on 2 criteria:
+            // 1. If a vertex is already visited and a cycle has not yet been found, that vertex
+            //    cannot be part of a cycle.
+            // 2. For this particular problem, self-loops don't count as "round trips".
+            if (vertex_states[v] == Visited || v == u) {
                 continue;
             }
+
+            if (vertex_states[v] == Visiting) {
+                cycle.push_back(v);
+                cycle.push_back(u);
+                vertex_states[v] = Visited; // pedantic
+                vertex_states[u] = Visited; // pedantic
+                return;
+            }
+
             self(self, v);
             if (!cycle.empty()) {
+                if (cycle.front() != cycle.back()) {
+                    cycle.push_back(u);
+                }
                 break;
             }
         }
-        if (!cycle.empty() && (cycle.size() == 1 || cycle.front() != cycle.back())) {
-            cycle.push_back(u);
-        }
-        visiting[u] = false;
+        vertex_states[u] = Visited;
     };
 
-    for (auto u = i64{1}; u <= num_vertices && num_unvisited_vertices > 0 && cycle.empty();
-         u += 1) {
-        if (!visited[u]) {
+    for (auto u = i64{0}; u < std::ssize(adj) && cycle.empty(); u += 1) {
+        if (vertex_states[u] == Unvisited) {
             dfs(dfs, u);
         }
     }
@@ -95,7 +89,6 @@ auto find_cycle(const AdjLists<i64> &adj) -> std::vector<i64> {
     if (!cycle.empty()) {
         std::reverse(cycle.begin(), cycle.end());
     }
-
     return cycle;
 }
 
