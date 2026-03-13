@@ -5,7 +5,7 @@
 // === Solution Information ===
 // Copyright (C) 2025 Nicolas Dumitru
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Submission URL: https://leetcode.com/problems/largest-divisible-subset/submissions/1946234203/
+// Submission URL: https://leetcode.com/problems/largest-divisible-subset/submissions/1947426307/
 // Verdict: Accepted
 
 #include <algorithm>
@@ -22,7 +22,7 @@ public:
 
         auto subset_size = std::vector<i32>(std::ssize(nums), 1);
         auto parent = std::vector<i32>(std::ssize(nums), -1);
-        auto lds_rep = 0; // largest number in the largest divisible subset
+        auto lds_rep = i32{0}; // largest number in the largest divisible subset
         for (auto i = i32{0}; i < std::ssize(nums); i += 1) {
             for (auto j = i32{0}; j < i; j += 1) {
                 if (nums[i] % nums[j] == 0 && 1 + subset_size[j] > subset_size[i]) {
