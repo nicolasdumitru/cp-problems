@@ -31,6 +31,11 @@
           black
 
           just
+
+          nil
+          nixd
+          nixfmt
+          nixfmt-tree
         ];
       };
     };
